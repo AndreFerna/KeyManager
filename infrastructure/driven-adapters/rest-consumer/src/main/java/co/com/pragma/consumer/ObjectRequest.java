@@ -8,9 +8,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
+//@NoArgsConstructor
+//@AllArgsConstructor
+@Builder
 public class ObjectRequest {
 
     private String val1;

@@ -1,4 +1,5 @@
 package co.com.pragma.model.key;
+
 import lombok.*;
 
 @Getter
@@ -6,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Key {
-    private Enum type;
-    private String value;
+public class CustomerInformation {
+    private Identification identification;
+    private Card card;
 }
