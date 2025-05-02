@@ -1,4 +1,13 @@
 package co.com.pragma.consumer;
 
-public class CustomerReponse {
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
+public class CustomerResponse {
+    private IdentificationResponse identification;
+    private CardResponse card;
 }

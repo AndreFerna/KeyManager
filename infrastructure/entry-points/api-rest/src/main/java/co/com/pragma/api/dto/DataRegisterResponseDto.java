@@ -8,6 +8,5 @@ import lombok.*;
 @Builder
 public class DataRegisterResponseDto {
     @NotNull
-    @NotBlank(message = "El objeto keyInformationDto es obligatorio")
-    private KeyInformationRegisterDto keyInformationDto;
+    private KeyInformationRegisterDto keyInformation;
 }

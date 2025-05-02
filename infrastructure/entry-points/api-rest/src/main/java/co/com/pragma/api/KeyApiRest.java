@@ -1,5 +1,10 @@
 package co.com.pragma.api;
 import co.com.pragma.api.dto.*;
+import co.com.pragma.api.dto.DataRegisterRequestDto;
+import co.com.pragma.api.mapper.DataRegisterRequestDtoMapper;
+import co.com.pragma.model.key.DataRegisterRequest;
+import co.com.pragma.model.key.KeyInformation;
+import co.com.pragma.usecase.key.KeyUseCase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class KeyApiRest {
 //    private final MyUseCase useCase;
+    private final KeyUseCase keyUseCase;
 
 
     @GetMapping(path = "/path")
@@ -19,8 +25,11 @@ public class KeyApiRest {
     }
 
     @PostMapping(path = "/register-key")
-    public DataRegisterResponseDto registerKey(@RequestHeader("message-id") String messageId, @RequestBody @Valid DataRegisterRequestDto dataRegisterRequestDto){
-        return null;
+    public DataRegisterResponseDto registerKey(@RequestBody @Valid DataRegisterRequestDto dataRegisterRequestDto){
+        DataRegisterRequest dataRegisterRequest = DataRegisterRequestDtoMapper.registerRequestDtoToRegister(dataRegisterRequestDto);
+        KeyInformation keyInformation = keyUseCase.save(dataRegisterRequest);
+        DataRegisterResponseDto dataRegisterResponseDto = DataRegisterRequestDtoMapper.toRegisterResponseDto(keyInformation, dataRegisterRequestDto.getCustomerInformation().getCard());
+        return dataRegisterResponseDto;
     }
 
     @PutMapping(path = "/update-key")

@@ -1,4 +1,5 @@
 package co.com.pragma.api.dto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -8,12 +9,12 @@ import lombok.*;
 @Builder
 public class DataUpdateStatusRequestDto {
     @NotNull
-    @NotBlank(message = "El objeto requestInformation es obligatorio")
+    @Valid
     private RequestInformationDto requestInformation;
     @NotNull
-    @NotBlank(message = "El objeto customer es obligatorio")
+    @Valid
     private CustomerDto customer;
     @NotNull
-    @NotBlank(message = "El objeto key es obligatorio")
+    @Valid
     private KeyStatusDto key;
 }

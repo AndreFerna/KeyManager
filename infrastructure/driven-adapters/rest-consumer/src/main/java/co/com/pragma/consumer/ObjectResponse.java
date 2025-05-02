@@ -1,10 +1,6 @@
 package co.com.pragma.consumer;
 
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,7 +8,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class ObjectResponse {
-
-    private String state;
-
+    private String id;
+    private CustomerResponse customer;
 }

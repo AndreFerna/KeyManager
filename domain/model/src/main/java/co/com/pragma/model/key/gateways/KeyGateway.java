@@ -1,4 +1,7 @@
 package co.com.pragma.model.key.gateways;
 
-public interface KeyRepository {
+import co.com.pragma.model.key.KeyInformation;
+
+public interface KeyGateway {
+    KeyInformation saveKey(KeyInformation keyInformation);
 }

@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Key {
-    private Enum type;
+    private String type;
     private String value;
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExceptionError {
+public class GeneralExceptionResponse {
     private int status;
     private String title;
     private ArrayList<Errors> errors;

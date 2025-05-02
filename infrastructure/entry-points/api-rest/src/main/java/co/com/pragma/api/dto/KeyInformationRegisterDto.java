@@ -8,9 +8,7 @@ import lombok.*;
 @Builder
 public class KeyInformationRegisterDto {
     @NotNull
-    @NotBlank(message = "El objeto key es obligatorio")
     private CompleteKeyInformationDto key;
     @NotNull
-    @NotBlank(message = "El objeto card es obligatorio")
     private CardDto card;
 }

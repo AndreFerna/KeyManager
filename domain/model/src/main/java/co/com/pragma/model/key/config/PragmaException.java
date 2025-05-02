@@ -1,7 +1,14 @@
 package co.com.pragma.model.key.config;
 
+import lombok.*;
+
+@Getter
 public class PragmaException extends RuntimeException {
-  public PragmaException(String message) {
-    super(message);
-  }
+
+    private final ErrorCode error;
+
+    public PragmaException(ErrorCode errorCode) {
+        super(errorCode.getDetail());
+        this.error = errorCode;
+    }
 }

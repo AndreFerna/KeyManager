@@ -1,5 +1,8 @@
 package co.com.pragma.consumer;
 
+import co.com.pragma.consumer.mapper.IdentificationMapper;
+import co.com.pragma.model.key.CustomerInformation;
+import co.com.pragma.model.key.gateways.IdentificationGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import okhttp3.MediaType;
@@ -13,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class RestConsumer // implements Gateway from domain
+public class RestConsumer implements IdentificationGateway// implements Gateway from domain
 {
     private final String url;
     private final OkHttpClient client;
@@ -25,41 +28,36 @@ public class RestConsumer // implements Gateway from domain
         this.mapper = mapper;
     }
 
-    // these methods are an example that illustrates the implementation of OKHTTP Client.
-    // You should use the methods that you implement from the Gateway from the domain.
-
-    @CircuitBreaker(name = "testGet", fallbackMethod = "testGetOk") // this name should match with settings name in application.yaml
-    public ObjectResponse testGet() throws IOException {
-
+    @CircuitBreaker(name = "getIdentification", fallbackMethod = "fallbackMethod")
+    public ObjectResponse getIdentification(String id) throws IOException {
         Request request = new Request.Builder()
-                .url(url)
+                .url(url + id)
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .build();
-
         return callAndMap(request, ObjectResponse.class);
     }
 
-    public String testGetOk(Exception ignored) {
-        return "fallback";
+    public String fallbackMethod(Exception ignored) {
+        return "¡No hubo respuesta del api consumida!";
     }
 
     @CircuitBreaker(name = "testPost") // this name should match with settings name in application.yaml
     public ObjectResponse testPost() throws IOException {
         String json = mapper.writeValueAsString(ObjectRequest.builder()
-            .val1("exampleval1")
-            .val2("exampleval1")
-            .build()
+                .val1("exampleval1")
+                .val2("exampleval1")
+                .build()
         );
 
         RequestBody requestBody = RequestBody
-            .create(json, MediaType.parse("application/json; charset=utf-8"));
+                .create(json, MediaType.parse("application/json; charset=utf-8"));
 
         Request request = new Request.Builder()
-            .url(url)
-            .post(requestBody)
-            .addHeader("Content-Type","application/json")
-            .build();
+                .url(url)
+                .post(requestBody)
+                .addHeader("Content-Type", "application/json")
+                .build();
 
         return callAndMap(request, ObjectResponse.class);
     }
@@ -68,7 +66,24 @@ public class RestConsumer // implements Gateway from domain
         Response response = client.newCall(request).execute();
         if (response.isSuccessful()) {
             return mapper.readValue(response.body().string(), clazz);
+        } else {
+            return null;
         }
-        throw new IOException(response.toString());
+        //throw new IOException(response.toString());
+    }
+
+    @Override
+    public CustomerInformation getIdentificationId(String id) {
+        CustomerInformation customerInformation = null;
+        try{
+            ObjectResponse objectResponse = getIdentification(id);
+            if (objectResponse != null) {
+                customerInformation = IdentificationMapper.customerInformation(objectResponse);
+            }
+            return customerInformation;
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            return customerInformation;
+        }
     }
 }
