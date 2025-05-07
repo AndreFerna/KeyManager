@@ -42,8 +42,34 @@ public class KeyUseCase {
 
         KeyInformation keyInformation = keyGateway.saveKey(keyInformationData);
 
-        System.out.println("Llave Guardada --------------------------------------------------> " + keyInformation);
         return keyInformationData;
+    }
+
+    public KeyStatus updateKey(KeyInformationUpdate keyInformationUpdate) {
+
+        KeyInformation keyInformation = keyGateway.keyById(keyInformationUpdate.getCurrentKey().getValue());
+
+        if (Objects.isNull(keyInformation)) {
+            throw new PragmaException(ErrorCode.BP409_1);
+        }
+
+        KeyInformation keyInformationData = KeyInformation.builder()
+                .value(keyInformationUpdate.getNewKey().getValue())
+                .type(keyInformationUpdate.getNewKey().getType())
+                .status(keyInformation.getStatus())
+                .creationDate(keyInformation.getCreationDate())
+                .build();
+
+        KeyInformation keyInformationResp = keyGateway.saveKey(keyInformationData);
+
+        KeyStatus keyStatus = KeyStatus.builder()
+                .type(keyInformationResp.getType())
+                .value(keyInformationResp.getValue())
+                .status(keyInformationResp.getStatus())
+                .build();
+
+        keyGateway.deleteKeyById(keyInformationUpdate.getCurrentKey().getValue());
+        return keyStatus;
     }
 
 }

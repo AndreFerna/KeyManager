@@ -1,9 +1,11 @@
 package co.com.pragma.api;
 import co.com.pragma.api.dto.*;
 import co.com.pragma.api.dto.DataRegisterRequestDto;
-import co.com.pragma.api.mapper.DataRegisterRequestDtoMapper;
+import co.com.pragma.api.mapper.RegisterKeyMapper;
+import co.com.pragma.api.mapper.UpdateKeyMapper;
 import co.com.pragma.model.key.DataRegisterRequest;
 import co.com.pragma.model.key.KeyInformation;
+import co.com.pragma.model.key.KeyStatus;
 import co.com.pragma.usecase.key.KeyUseCase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,15 +28,17 @@ public class KeyApiRest {
 
     @PostMapping(path = "/register-key")
     public DataRegisterResponseDto registerKey(@RequestBody @Valid DataRegisterRequestDto dataRegisterRequestDto){
-        DataRegisterRequest dataRegisterRequest = DataRegisterRequestDtoMapper.registerRequestDtoToRegister(dataRegisterRequestDto);
+        DataRegisterRequest dataRegisterRequest = RegisterKeyMapper.registerRequestDtoToRegister(dataRegisterRequestDto);
         KeyInformation keyInformation = keyUseCase.save(dataRegisterRequest);
-        DataRegisterResponseDto dataRegisterResponseDto = DataRegisterRequestDtoMapper.toRegisterResponseDto(keyInformation, dataRegisterRequestDto.getCustomerInformation().getCard());
+        DataRegisterResponseDto dataRegisterResponseDto = RegisterKeyMapper.toRegisterResponseDto(keyInformation, dataRegisterRequestDto.getCustomerInformation().getCard());
         return dataRegisterResponseDto;
     }
 
     @PutMapping(path = "/update-key")
     public DataUpdateResponseDto updateKey(@RequestBody @Valid DataUpdateKeyRequestDto dataUpdateKeyRequestDto){
-        return null;
+        KeyStatus keyStatus = keyUseCase.updateKey(UpdateKeyMapper.toKeyInformationUpdate(dataUpdateKeyRequestDto.getKey()));
+        KeyStatusDto keyStatusDto = UpdateKeyMapper.keyStatusToKeyStatusDto(keyStatus);
+        return UpdateKeyMapper.toDataUpdateResponseDto(keyStatusDto);
     }
 
     @PutMapping(path = "/update-status")

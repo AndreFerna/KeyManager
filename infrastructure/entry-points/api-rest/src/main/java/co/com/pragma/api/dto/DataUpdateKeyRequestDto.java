@@ -17,5 +17,5 @@ public class DataUpdateKeyRequestDto {
     private CustomerDto customer;
     @NotNull
     @Valid
-    private KeyDto key;
+    private KeyInformationUpdateDto key;
 }

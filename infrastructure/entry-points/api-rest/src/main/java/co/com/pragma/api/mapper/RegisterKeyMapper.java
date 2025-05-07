@@ -6,7 +6,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 
 @UtilityClass
-public class DataRegisterRequestDtoMapper {
+public class RegisterKeyMapper {
 
     public static Identification identificationDtoToIdentification(IdentificationDto identificationDto){
         Identification identification = Identification.builder().build();
@@ -18,12 +18,6 @@ public class DataRegisterRequestDtoMapper {
         Card card = Card.builder().build();
         BeanUtils.copyProperties(cardDto, card);
         return card;
-    }
-
-    public static CardDto cardToCardDto(Card card){
-        CardDto cardDto = CardDto.builder().build();
-        BeanUtils.copyProperties(card, cardDto);
-        return cardDto;
     }
 
     public static CustomerInformation customerInformationDtoToCustomerInformation(CustomerInformationDto customerInformationDto){
@@ -64,7 +58,6 @@ public class DataRegisterRequestDtoMapper {
 
     public static DataRegisterResponseDto toRegisterResponseDto(KeyInformation keyInformation, CardDto cardDto){
         CompleteKeyInformationDto completeKeyInformationDto = keyInformationToCompleteKeyInformationDto(keyInformation);
-        //CardDto cardDto = cardToCardDto(card);
         return DataRegisterResponseDto.builder()
                 .keyInformation(toKeyInformationRegisterDto(completeKeyInformationDto, cardDto))
                 .build();

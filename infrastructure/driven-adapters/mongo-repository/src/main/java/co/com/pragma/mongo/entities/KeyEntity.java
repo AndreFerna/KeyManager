@@ -5,11 +5,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Getter
-@Setter
-@Builder
-@ToString
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Document(collection = "key")
 public class KeyEntity {
     @Id
@@ -22,5 +21,4 @@ public class KeyEntity {
     private String customerId;
     @Field("card_id")
     private String cardId;
-
 }

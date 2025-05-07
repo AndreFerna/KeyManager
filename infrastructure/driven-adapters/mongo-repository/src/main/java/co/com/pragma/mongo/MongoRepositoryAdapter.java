@@ -22,4 +22,16 @@ public class MongoRepositoryAdapter extends AdapterOperations<KeyInformation, Ke
         KeyEntity keyEntity = saveData(KeyMapper.toEntity(keyInformation));
         return KeyMapper.toDomain(keyEntity);
     }
+
+    @Override
+    public KeyInformation keyById(String id) {
+        KeyInformation keyInformation = findById(id);
+        return keyInformation;
+    }
+
+    @Override
+    public String deleteKeyById(String id) {
+        return deleteById(id);
+    }
+
 }

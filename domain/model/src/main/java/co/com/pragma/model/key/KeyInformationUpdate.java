@@ -7,9 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
-public class KeyStatus {
-    private String type;
-    private String value;
-    private String status;
+public class KeyInformationUpdate {
+    private Key currentKey;
+    private Key newKey;
 }

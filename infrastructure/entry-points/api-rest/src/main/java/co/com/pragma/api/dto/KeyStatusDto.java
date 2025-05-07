@@ -6,6 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class KeyStatusDto {
     @NotNull
     @Size(min = 1, max = 20)

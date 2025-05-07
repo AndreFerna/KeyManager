@@ -57,7 +57,13 @@ public abstract class AdapterOperations<E, D, I, R extends MongoRepository<D, I>
     }
 
     public E findById(I id) {
-        return toEntity(repository.findById(id).orElse(null));
+        D data = repository.findById(id).orElse(null);
+        return toEntity(data);
+    }
+
+    public String deleteById(I id){
+        repository.deleteById(id);
+        return "Llave eliminada";
     }
 
     public List<E> findByExample(E entity) {
