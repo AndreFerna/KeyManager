@@ -3,6 +3,7 @@ import co.com.pragma.api.dto.*;
 import co.com.pragma.api.dto.DataRegisterRequestDto;
 import co.com.pragma.api.mapper.RegisterKeyMapper;
 import co.com.pragma.api.mapper.UpdateKeyMapper;
+import co.com.pragma.api.mapper.UpdateStatusMapper;
 import co.com.pragma.model.key.DataRegisterRequest;
 import co.com.pragma.model.key.KeyInformation;
 import co.com.pragma.model.key.KeyStatus;
@@ -16,13 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/v1/key-management/key-manager-api", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class KeyApiRest {
-//    private final MyUseCase useCase;
+
     private final KeyUseCase keyUseCase;
 
-
-    @GetMapping(path = "/path")
+    @GetMapping(path = "/health")
     public String commandName() {
-//      return useCase.doAction();
         return "Hello World";
     }
 
@@ -43,6 +42,8 @@ public class KeyApiRest {
 
     @PutMapping(path = "/update-status")
     public DataUpdateResponseDto updateStatus(@RequestBody @Valid DataUpdateStatusRequestDto dataUpdateStatusRequestDto){
-        return null;
+        KeyStatus keyStatus = keyUseCase.updateStatus(UpdateStatusMapper.keyStatusDtoToKeyStatus(dataUpdateStatusRequestDto.getKey()));
+        KeyStatusDto keyStatusDto = UpdateStatusMapper.keyStatusToKeyStatusDto(keyStatus);
+        return UpdateStatusMapper.toDataUpdateResponseDto(keyStatusDto);
     }
 }

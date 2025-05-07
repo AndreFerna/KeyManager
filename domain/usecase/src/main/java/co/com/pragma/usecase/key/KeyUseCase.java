@@ -52,14 +52,16 @@ public class KeyUseCase {
         if (Objects.isNull(keyInformation)) {
             throw new PragmaException(ErrorCode.BP409_1);
         }
+        System.out.println("Informacion llave ------------------- "+ keyInformation);
 
         KeyInformation keyInformationData = KeyInformation.builder()
                 .value(keyInformationUpdate.getNewKey().getValue())
                 .type(keyInformationUpdate.getNewKey().getType())
                 .status(keyInformation.getStatus())
                 .creationDate(keyInformation.getCreationDate())
+                .cardNumber(keyInformation.getCardNumber())
+                .customerNumber(keyInformation.getCustomerNumber())
                 .build();
-
         KeyInformation keyInformationResp = keyGateway.saveKey(keyInformationData);
 
         KeyStatus keyStatus = KeyStatus.builder()
@@ -70,6 +72,44 @@ public class KeyUseCase {
 
         keyGateway.deleteKeyById(keyInformationUpdate.getCurrentKey().getValue());
         return keyStatus;
+    }
+
+    public KeyStatus updateStatus(KeyStatus keyStatus){
+        KeyInformation keyInformation = keyGateway.keyById(keyStatus.getValue());
+
+        if (Objects.isNull(keyInformation)) {
+            throw new PragmaException(ErrorCode.BP409_1);
+        }
+
+        String status = "";
+
+        if(keyStatus.getStatus().equals("BLOQUEAR")){
+            status = "BLOQUEADA";
+        }
+        else if (keyStatus.getStatus().equals("DESBLOQUEAR")) {
+            status = "ACTIVA";
+        } else if (keyStatus.getStatus().equals("CANCELAR")) {
+            status = "CANCELADA";
+        }
+
+        KeyInformation keyInformationData = KeyInformation.builder()
+                .value(keyInformation.getValue())
+                .type(keyInformation.getType())
+                .status(status)
+                .creationDate(keyInformation.getCreationDate())
+                .cardNumber(keyInformation.getCardNumber())
+                .customerNumber(keyInformation.getCustomerNumber())
+                .build();
+
+        KeyInformation keyInformationResp = keyGateway.saveKey(keyInformationData);
+
+        KeyStatus keyStatusResp = KeyStatus.builder()
+                .type(keyInformationResp.getType())
+                .value(keyInformationResp.getValue())
+                .status(keyInformationResp.getStatus())
+                .build();
+
+        return keyStatusResp;
     }
 
 }
