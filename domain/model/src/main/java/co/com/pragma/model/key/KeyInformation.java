@@ -13,6 +13,6 @@ public class KeyInformation {
     private String value;
     private String status;
     private String creationDate;
-    private String cardNumber;
-    private String customerNumber;
+    private String cardId;
+    private String customerId;
 }

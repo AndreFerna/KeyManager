@@ -11,8 +11,8 @@ public class KeyMapper {
                 .type(keyInformation.getType())
                 .status(keyInformation.getStatus())
                 .creationDate(keyInformation.getCreationDate())
-                .customerId(keyInformation.getCustomerNumber())
-                .cardId(keyInformation.getCardNumber())
+                .customerId(keyInformation.getCustomerId())
+                .cardId(keyInformation.getCardId())
                 .build();
     }
 
@@ -22,8 +22,8 @@ public class KeyMapper {
                 .type(keyEntity.getType())
                 .status(keyEntity.getStatus())
                 .creationDate(keyEntity.getCreationDate())
-                .customerNumber(keyEntity.getCustomerId())
-                .cardNumber(keyEntity.getCardId())
+                .customerId(keyEntity.getCustomerId())
+                .cardId(keyEntity.getCardId())
                 .build();
     }
 

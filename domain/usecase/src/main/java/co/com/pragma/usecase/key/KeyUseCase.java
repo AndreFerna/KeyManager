@@ -36,8 +36,8 @@ public class KeyUseCase {
                 .type(key.getType())
                 .status("ACTIVA")
                 .creationDate(LocalDateTime.now().toString())
-                .cardNumber(customerInformation.getCard().getNumber())
-                .customerNumber(identification.getNumber())
+                .cardId(customerInformation.getCard().getNumber())
+                .customerId(identification.getNumber())
                 .build();
 
         KeyInformation keyInformation = keyGateway.saveKey(keyInformationData);
@@ -52,15 +52,14 @@ public class KeyUseCase {
         if (Objects.isNull(keyInformation)) {
             throw new PragmaException(ErrorCode.BP409_1);
         }
-        System.out.println("Informacion llave ------------------- "+ keyInformation);
 
         KeyInformation keyInformationData = KeyInformation.builder()
                 .value(keyInformationUpdate.getNewKey().getValue())
                 .type(keyInformationUpdate.getNewKey().getType())
                 .status(keyInformation.getStatus())
                 .creationDate(keyInformation.getCreationDate())
-                .cardNumber(keyInformation.getCardNumber())
-                .customerNumber(keyInformation.getCustomerNumber())
+                .cardId(keyInformation.getCardId())
+                .customerId(keyInformation.getCustomerId())
                 .build();
         KeyInformation keyInformationResp = keyGateway.saveKey(keyInformationData);
 
@@ -97,8 +96,8 @@ public class KeyUseCase {
                 .type(keyInformation.getType())
                 .status(status)
                 .creationDate(keyInformation.getCreationDate())
-                .cardNumber(keyInformation.getCardNumber())
-                .customerNumber(keyInformation.getCustomerNumber())
+                .cardId(keyInformation.getCardId())
+                .customerId(keyInformation.getCustomerId())
                 .build();
 
         KeyInformation keyInformationResp = keyGateway.saveKey(keyInformationData);
