@@ -7,10 +7,16 @@ import co.com.pragma.api.mapper.UpdateStatusMapper;
 import co.com.pragma.model.key.DataRegisterRequest;
 import co.com.pragma.model.key.KeyInformation;
 import co.com.pragma.model.key.KeyStatus;
+import co.com.pragma.model.key.config.ErrorCode;
+import co.com.pragma.model.key.config.PragmaException;
 import co.com.pragma.usecase.key.KeyUseCase;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.actuate.health.HealthComponent;
+import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +26,17 @@ public class KeyApiRest {
 
     private final KeyUseCase keyUseCase;
 
-    @GetMapping(path = "/health")
-    public String commandName() {
-        return "Hello World";
+    private HealthEndpoint healthEndpoint;
+
+    @RequestMapping(path = "/health", method = RequestMethod.HEAD)
+    public ResponseEntity<Void> health() {
+        HealthComponent healthComponent = healthEndpoint.health();
+
+        if (Status.UP.equals(healthComponent.getStatus())) {
+            return ResponseEntity.ok().build();
+        } else {
+            throw new PragmaException(ErrorCode.SP503);
+        }
     }
 
     @PostMapping(path = "/register-key")

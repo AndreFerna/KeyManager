@@ -46,7 +46,6 @@ public class KeyUseCase {
     }
 
     public KeyStatus updateKey(KeyInformationUpdate keyInformationUpdate) {
-
         KeyInformation keyInformation = keyGateway.keyById(keyInformationUpdate.getCurrentKey().getValue());
 
         if (Objects.isNull(keyInformation)) {
@@ -100,7 +99,9 @@ public class KeyUseCase {
                 .customerId(keyInformation.getCustomerId())
                 .build();
 
+        System.out.println("Key --------"+keyInformationData);
         KeyInformation keyInformationResp = keyGateway.saveKey(keyInformationData);
+        System.out.println("guardado --------"+keyInformationResp);
 
         KeyStatus keyStatusResp = KeyStatus.builder()
                 .type(keyInformationResp.getType())
