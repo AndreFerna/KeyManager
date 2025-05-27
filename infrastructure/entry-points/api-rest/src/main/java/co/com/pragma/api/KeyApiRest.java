@@ -6,6 +6,7 @@ import co.com.pragma.api.mapper.UpdateKeyMapper;
 import co.com.pragma.api.mapper.UpdateStatusMapper;
 import co.com.pragma.model.key.DataRegisterRequest;
 import co.com.pragma.model.key.KeyInformation;
+import co.com.pragma.model.key.KeyInformationUpdate;
 import co.com.pragma.model.key.KeyStatus;
 import co.com.pragma.model.key.config.ErrorCode;
 import co.com.pragma.model.key.config.PragmaException;
@@ -49,14 +50,16 @@ public class KeyApiRest {
 
     @PutMapping(path = "/update-key")
     public DataUpdateResponseDto updateKey(@RequestBody @Valid DataUpdateKeyRequestDto dataUpdateKeyRequestDto){
-        KeyStatus keyStatus = keyUseCase.updateKey(UpdateKeyMapper.toKeyInformationUpdate(dataUpdateKeyRequestDto.getKey()));
+        KeyInformationUpdate keyInformationUpdate = UpdateKeyMapper.toKeyInformationUpdate(dataUpdateKeyRequestDto.getKey());
+        KeyStatus keyStatus = keyUseCase.updateKey(keyInformationUpdate);
         KeyStatusDto keyStatusDto = UpdateKeyMapper.keyStatusToKeyStatusDto(keyStatus);
         return UpdateKeyMapper.toDataUpdateResponseDto(keyStatusDto);
     }
 
     @PutMapping(path = "/update-status")
     public DataUpdateResponseDto updateStatus(@RequestBody @Valid DataUpdateStatusRequestDto dataUpdateStatusRequestDto){
-        KeyStatus keyStatus = keyUseCase.updateStatus(UpdateStatusMapper.keyStatusDtoToKeyStatus(dataUpdateStatusRequestDto.getKey()));
+        KeyStatus keyStatusUseCase = UpdateStatusMapper.keyStatusDtoToKeyStatus(dataUpdateStatusRequestDto.getKey());
+        KeyStatus keyStatus = keyUseCase.updateStatus(keyStatusUseCase);
         KeyStatusDto keyStatusDto = UpdateStatusMapper.keyStatusToKeyStatusDto(keyStatus);
         return UpdateStatusMapper.toDataUpdateResponseDto(keyStatusDto);
     }
