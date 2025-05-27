@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class MongoRepositoryAdapter extends AdapterOperations<KeyInformation, KeyEntity, String, MongoDBRepository> implements KeyGateway
-// implements ModelRepository from domain
 {
 
     public MongoRepositoryAdapter(MongoDBRepository repository, ObjectMapper mapper) {
