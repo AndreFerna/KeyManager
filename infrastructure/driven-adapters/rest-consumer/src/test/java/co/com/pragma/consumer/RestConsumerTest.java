@@ -1,6 +1,7 @@
 package co.com.pragma.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -8,7 +9,10 @@ import org.junit.jupiter.api.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.io.IOException;
 
+import static java.rmi.server.LogStream.log;
 
+
+@Slf4j
 public class RestConsumerTest {
 
     private static RestConsumer restConsumer;
@@ -36,26 +40,14 @@ public class RestConsumerTest {
     @Test
     @DisplayName("Validate the function testGet.")
     void validateTestGet() throws IOException {
+        String id = "1193134338";
         mockBackEnd.enqueue(new MockResponse()
                 .setHeader("Content-Type", "application/json")
                 .setResponseCode(200)
-                .setBody("{\"state\" : \"ok\"}"));
+                .setBody("{\"id\" : \"1193134338\"}"));
 
-        var response = restConsumer.getIdentification("");
-
-        //Assertions.assertEquals("ok", response.getState());
+        var response = restConsumer.getIdentification(id);
+        Assertions.assertEquals(id, response.getId());
     }
 
-    @Test
-    @DisplayName("Validate the function testPost.")
-    void validateTestPost() throws IOException {
-        mockBackEnd.enqueue(new MockResponse()
-                .setHeader("Content-Type", "application/json")
-                .setResponseCode(200)
-                .setBody("{\"state\" : \"ok\"}"));
-
-        var response = restConsumer.testPost();
-
-        //Assertions.assertEquals("ok", response.getState());
-    }
 }

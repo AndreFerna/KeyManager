@@ -42,26 +42,6 @@ public class RestConsumer implements IdentificationGateway// implements Gateway 
         return "¡No hubo respuesta del api consumida!";
     }
 
-    @CircuitBreaker(name = "testPost") // this name should match with settings name in application.yaml
-    public ObjectResponse testPost() throws IOException {
-        String json = mapper.writeValueAsString(ObjectRequest.builder()
-                .val1("exampleval1")
-                .val2("exampleval1")
-                .build()
-        );
-
-        RequestBody requestBody = RequestBody
-                .create(json, MediaType.parse("application/json; charset=utf-8"));
-
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .addHeader("Content-Type", "application/json")
-                .build();
-
-        return callAndMap(request, ObjectResponse.class);
-    }
-
     private <T> T callAndMap(Request request, Class<T> clazz) throws IOException {
         Response response = client.newCall(request).execute();
         if (response.isSuccessful()) {
